@@ -10,22 +10,27 @@ document.getElementById("extract-all").addEventListener("click", (event) => {
 //   localStorgeData = result;
 // });
 
-const videoid = "n6q9TTZD3mA";
-const time = 426;
-
 let NOTION_URL = "";
 
 const searchElement = document.getElementById("search-box");
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 const listElement = document.getElementById("list");
+const sentimentElement = document.getElementById("sentiment");
 
+const positiveBar = document.getElementById("bar-one");
+const nuetralBar = document.getElementById("bar-two");
+const negativeBar = document.getElementById("bar-three");
+
+sentimentElement.style.visibility = "hidden";
 searchElement.style.visibility = "hidden";
 
 searchButton.addEventListener("click", (e) => {
   const searchQuery = searchInput.value;
   if (searchQuery && NOTION_URL) {
-    fetch(`https://elayted-node.herokuapp.com/q/?q=${searchQuery}&notion=${NOTION_URL}`)
+    fetch(
+      `https://elayted-node.herokuapp.com/q/?q=${searchQuery}&notion=${NOTION_URL}`
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -91,9 +96,9 @@ function handler() {
         const youtubeVideoLinks = links.filter((link) =>
           link.match(YT_VDEO_REGEX)
         );
+
         //get only youtube video ids
         const youtubeVideoIds = getVideoIds(youtubeVideoLinks);
-        // console.log(youtubeVideoIds);
 
         //current tab Url
         NOTION_URL = tabUrl;
@@ -102,6 +107,29 @@ function handler() {
 
           //send POST request to backend with notion url and yt video ids
           indexYoutubeTranscripts(youtubeVideoIds, tabUrl);
+
+          //send GET request for sentimental analysis stats
+          setTimeout(() => {
+            getStats(tabUrl, ({ avgPositive, avgNegative, avgNeutral }) => {
+              console.log({ avgPositive, avgNegative, avgNeutral });
+
+              sentimentElement.innerHTML = `<h2>Overall Sentiment Analysis</h2>
+              <div id='bar-one' class="bar-one">
+                <span class="year">Positive</span>
+                <div style="width:${avgPositive}%;" class="bar" data-percentage="${avgPositive}%"></div>
+              </div>
+              <div id='bar-two' class="bar-two">
+                <span class="year">Neutral</span>
+                <div style="width:${avgNeutral}%;" class="bar" data-percentage="${avgNeutral}%"></div>
+              </div>
+              <div id='bar-three' class="bar-three">
+                <span class="year">Negative</span>
+                <div style="width:${avgNegative}%;" class="bar" data-percentage="${avgNegative}%"></div>
+              </div>`;
+
+              sentimentElement.style.visibility = "visible";
+            });
+          }, 400);
         }
       });
     })
@@ -138,6 +166,8 @@ function passNext(result, fulfill, reject) {
 }
 
 // API calls
+
+//send videoIds data to backend for indexing
 function indexYoutubeTranscripts(youtubeIds, notionUrl) {
   const allVideoIds = youtubeIds;
   let newVideoIds = [];
@@ -181,6 +211,23 @@ function indexYoutubeTranscripts(youtubeIds, notionUrl) {
         .catch(console.log);
     }
   }, 10);
+}
+
+//get sentimental analysis stats
+function getStats(notionUrl, onSuccess = console.log) {
+  fetch(`https://elayted-node.herokuapp.com/sentiment?notion=${notionUrl}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const { avgPositive, avgNegative, avgNeutral } = data.stats;
+      if (avgPositive && avgNegative && avgNeutral) {
+        onSuccess({
+          avgPositive: Math.floor(avgPositive),
+          avgNegative: Math.floor(avgNegative),
+          avgNeutral: Math.floor(avgNeutral),
+        });
+      }
+    })
+    .catch(console.log);
 }
 
 //utils

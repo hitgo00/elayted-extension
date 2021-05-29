@@ -7,13 +7,31 @@
   <link rel="stylesheet" href="css/popup.css">
   <link rel="stylesheet" href="css/search.css">
   <link rel="stylesheet" href="css/list.css">
+  <link rel="stylesheet" href="css/bar.css">
   <script src="https://kit.fontawesome.com/43dcc20e7a.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
   <h1 style="text-align: center;">ElaytEd</h1>
+
   <div class="container">
+
     <button id="extract-all" type="button">Extract All Links</button>
+    <section id='sentiment' class="bar-graph bar-graph-horizontal bar-graph-one">
+      <h2>Overall Sentiment Analysis</h2>
+      <div id='bar-one' class="bar-one">
+        <span class="year">Positive</span>
+        <div class="bar" data-percentage="20%"></div>
+      </div>
+      <div id='bar-two' class="bar-two">
+        <span class="year">Neutral</span>
+        <div class="bar" data-percentage="50%"></div>
+      </div>
+      <div id='bar-three' class="bar-three">
+        <span class="year">Negative</span>
+        <div class="bar" data-percentage="30%"></div>
+      </div>
+    </section>
     <div id="search-box" class="search-box">
       <input type="text" id='search-input' class="search-input" placeholder="Search..">
       <button id='search-button' class="search-button">
@@ -24,6 +42,10 @@
       <ul id='list' class="list">
       </ul>
     </div>
+
+
+
+
   </div>
 
 
