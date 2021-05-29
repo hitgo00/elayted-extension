@@ -18,6 +18,6 @@
       "js": ["content.js"]
     }
   ],
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage"],
   "content_security_policy": "script-src 'self' https://kit.fontawesome.com/43dcc20e7a.js; object-src 'self'"
 }

@@ -15,8 +15,8 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 }
-.list-item:hover{
-background-color: rgb(230, 230, 230);
+.list-item:hover {
+  background-color: rgb(230, 230, 230);
 }
 
 .list-item:last-child {
@@ -41,6 +41,13 @@ background-color: rgb(230, 230, 230);
 .list-item-content h4 {
   margin-top: 10px;
   font-size: 18px;
+}
+.list-item-content h3 {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgb(48, 45, 45);
+  font-style: italic;
 }
 .list-item-content p {
   margin-top: 5px;
