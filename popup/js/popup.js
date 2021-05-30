@@ -5,11 +5,6 @@ document.getElementById("extract-all").addEventListener("click", (event) => {
   handler().then(console.log);
 });
 
-// let localStorgeData;
-// chrome.storage.local.get(function (result) {
-//   localStorgeData = result;
-// });
-
 let NOTION_URL = "";
 
 const searchElement = document.getElementById("search-box");
@@ -22,7 +17,7 @@ const positiveBar = document.getElementById("bar-one");
 const nuetralBar = document.getElementById("bar-two");
 const negativeBar = document.getElementById("bar-three");
 
-sentimentElement.style.visibility = "hidden";
+sentimentElement.style.display = "none";
 searchElement.style.visibility = "hidden";
 
 searchButton.addEventListener("click", (e) => {
@@ -127,7 +122,7 @@ function handler() {
                 <div style="width:${avgNegative}%;" class="bar" data-percentage="${avgNegative}%"></div>
               </div>`;
 
-              sentimentElement.style.visibility = "visible";
+              sentimentElement.style.display = "block";
             });
           }, 400);
         }
